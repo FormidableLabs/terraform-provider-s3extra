@@ -30,6 +30,8 @@ jobs:
       - uses: actions/setup-go@v2
         with:
           go-version: ${{ env.GO_VERSION }}
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
       # This uses an action (hashicorp/ghaction-import-gpg) that assumes you set your 
       # private key in the `GPG_PRIVATE_KEY` secret and passphrase in the `PASSPHRASE`
       # secret. If you would rather own your own GPG handling, please fork this action
