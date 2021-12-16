@@ -103,10 +103,15 @@ func TestAccS3ExtraImmutableAssets(t *testing.T) {
 
 					testAccS3ExtraImmutableAssetsCheckFilesExist(s3client, "s3extra_immutable_assets.test", map[string]fileAssertion{
 						"fixtures/hello.txt": {
-							ContentType: "text/plain; charset=utf-8",
+							ContentType: map[string]bool{
+								"text/plain; charset=utf-8": true,
+							},
 						},
 						"fixtures/static/main.js": {
-							ContentType: "application/javascript",
+							ContentType: map[string]bool{
+								"application/javascript":         true,
+								"text/javascript; charset=utf-8": true,
+							},
 						},
 					}),
 				),
@@ -123,10 +128,15 @@ func TestAccS3ExtraImmutableAssets(t *testing.T) {
 					resource.TestCheckResourceAttr("s3extra_immutable_assets.test", "prefix", "updated"),
 					testAccS3ExtraImmutableAssetsCheckFilesExist(s3client, "s3extra_immutable_assets.test", map[string]fileAssertion{
 						"fixtures/hello.txt": {
-							ContentType: "text/plain; charset=utf-8",
+							ContentType: map[string]bool{
+								"text/plain; charset=utf-8": true,
+							},
 						},
 						"fixtures/static/main.js": {
-							ContentType: "application/javascript",
+							ContentType: map[string]bool{
+								"application/javascript":         true,
+								"text/javascript; charset=utf-8": true,
+							},
 						},
 					}),
 				),
@@ -143,7 +153,9 @@ func TestAccS3ExtraImmutableAssets(t *testing.T) {
 					resource.TestCheckResourceAttr("s3extra_immutable_assets.test", "prefix", "updated"),
 					testAccS3ExtraImmutableAssetsCheckFilesExist(s3client, "s3extra_immutable_assets.test", map[string]fileAssertion{
 						"fixtures/hello.txt": {
-							ContentType: "text/plain; charset=utf-8",
+							ContentType: map[string]bool{
+								"text/plain; charset=utf-8": true,
+							},
 						},
 					}),
 				),
@@ -187,7 +199,9 @@ resource "s3extra_immutable_assets" "test" {
 }
 
 type fileAssertion struct {
-	ContentType string
+	// The standard library's `mime` package emits different results per OS.
+	// Allow for functional alternatives if necessary.
+	ContentType map[string]bool
 }
 
 func testAccS3ExtraImmutableAssetsCheckFilesExist(s3client *s3.Client, resourceName string, assertions map[string]fileAssertion) resource.TestCheckFunc {
@@ -223,8 +237,12 @@ func testAccS3ExtraImmutableAssetsCheckFilesExist(s3client *s3.Client, resourceN
 					return err
 				}
 
-				if *result.ContentType != assertion.ContentType {
-					return fmt.Errorf("Uploaded file content type does not match the expected inferred content type. Expected: %s, found: %s", assertion.ContentType, *result.ContentType)
+				if _, ok := assertion.ContentType[*result.ContentType]; !ok {
+					var expected string
+					for key := range assertion.ContentType {
+						expected += " | " + key
+					}
+					return fmt.Errorf("Uploaded file content type does not match the expected inferred content type. Expected: %s, found: %s", expected, *result.ContentType)
 				}
 
 				if cacheControl, ok := rs.Primary.Attributes["file_configuration.cache_control"]; ok {
