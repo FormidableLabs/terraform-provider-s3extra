@@ -30,6 +30,10 @@ jobs:
     name: Show next version
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          # Allow goreleaser to access older tag information.
+          fetch-depth: 0
       - name: Install svu
         run: |
           echo 'deb [trusted=yes] https://apt.fury.io/caarlos0/ /' | sudo tee /etc/apt/sources.list.d/caarlos0.list
