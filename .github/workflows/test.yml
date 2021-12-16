@@ -25,6 +25,21 @@ env:
   GO_VERSION: '1.17'
 
 jobs:
+  # View the version number this PR will release as.
+  version:
+    name: Show next version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install svu
+        run: |
+          echo 'deb [trusted=yes] https://apt.fury.io/caarlos0/ /' | sudo tee /etc/apt/sources.list.d/caarlos0.list
+          sudo apt update
+          sudo apt install svu
+      - name: Determine version
+        run: |
+          git tag $(svu next)
+          git push --tags
+
   # Ensure project builds before running testing matrix
   build:
     name: Build
