@@ -48,7 +48,7 @@ func (t s3extraImmutableAssetsType) GetSchema(ctx context.Context) (tfsdk.Schema
 				MarkdownDescription: "Configuration options to apply to each matched file.",
 				Attributes: tfsdk.SingleNestedAttributes(map[string]tfsdk.Attribute{
 					"cache_control": {
-						MarkdownDescription: "The `cache_control` header to apply to all matched files.",
+						MarkdownDescription: "The `cache_control` header to apply to all uploaded files.",
 						Type:                types.StringType,
 						Optional:            true,
 					},
