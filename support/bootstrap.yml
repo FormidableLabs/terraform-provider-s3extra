@@ -1,10 +1,10 @@
 ---
-#############################################################################
+################################################################################
 # Bootstrap
-#############################################################################
-# This template provides secure-by-default base resources for Terraform root
-# modules stack to store and protect remote state.
-#############################################################################
+################################################################################
+# This template provides time-limited credentials for running Terraform provider
+# acceptance tests in a restricted AWS account.
+################################################################################
 AWSTemplateFormatVersion: '2010-09-09'
 
 Description: 'Terraform bootstrap'
@@ -23,76 +23,10 @@ Parameters:
     Default: "*"
 
 Resources:
-  Logs:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Sub '${ServiceName}-${AccountNickname}-state-logs'
-      AccessControl: LogDeliveryWrite
-      VersioningConfiguration:
-        Status: Enabled
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: aws:kms
-            BucketKeyEnabled: true
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-      LoggingConfiguration:
-        # Log to itself
-        DestinationBucketName: !Sub '${ServiceName}-${AccountNickname}-state-logs'
-        LogFilePrefix: !Sub 'logs/self/'
-      Tags:
-        - Key: 'Service'
-          Value: !Sub '${ServiceName}'
-
-  State:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Sub '${ServiceName}-${AccountNickname}-state'
-      AccessControl: Private
-      VersioningConfiguration:
-        Status: Enabled
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: aws:kms
-            BucketKeyEnabled: true
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-      LoggingConfiguration:
-        DestinationBucketName: !Ref Logs
-        LogFilePrefix: !Sub 'logs/${ServiceName}-${AccountNickname}-state/'
-      Tags:
-        - Key: 'Service'
-          Value: !Sub '${ServiceName}'
-
-  Locks:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: !Sub '${ServiceName}-${AccountNickname}-locks'
-      BillingMode: PAY_PER_REQUEST
-      KeySchema:
-        - AttributeName: LockID
-          KeyType: HASH
-      AttributeDefinitions:
-        - AttributeName: LockID
-          AttributeType: S
-      SSESpecification:
-        SSEEnabled: true
-        SSEType: KMS
-      Tags:
-        - Key: 'Service'
-          Value: !Sub '${ServiceName}'
-
   CiRole:
     Type: AWS::IAM::Role
     Properties:
+      RoleName: !Sub ${ServiceName}-${AccountNickname}-github
       AssumeRolePolicyDocument:
         Statement:
           - Effect: Allow

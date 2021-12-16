@@ -14,4 +14,4 @@ bootstrap:
 	    AccountNickname=prod \
 	    Organization=FormidableLabs \
 	    Repository=terraform-provider-s3extra \
-	  --capabilities CAPABILITY_IAM
+	  --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
