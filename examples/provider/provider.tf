@@ -1,3 +1,3 @@
-provider "scaffolding" {
-  # example configuration here
+provider "s3extra" {
+  region = "us-east-1"
 }

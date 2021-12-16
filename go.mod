@@ -1,12 +1,23 @@
-module github.com/hashicorp/terraform-provider-scaffolding-framework
+module github.com/FormidableLabs/terraform-provider-s3extra
 
 go 1.17
 
 require (
+	github.com/aws/aws-sdk-go-v2/config v1.11.0
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.7.4
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.21.0
+	github.com/goreleaser/fileglob v1.2.0
 	github.com/hashicorp/terraform-plugin-docs v0.5.1
 	github.com/hashicorp/terraform-plugin-framework v0.5.0
 	github.com/hashicorp/terraform-plugin-go v0.5.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.10.0
+)
+
+require (
+	github.com/apparentlymart/go-cidr v1.0.1 // indirect
+	github.com/aws/aws-sdk-go-v2 v1.11.2 // indirect
+	github.com/gobwas/glob v0.2.3 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
 
 require (
@@ -19,7 +30,19 @@ require (
 	github.com/apparentlymart/go-textseg v1.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310 // indirect
-	github.com/aws/aws-sdk-go v1.25.3 // indirect
+	github.com/aws/aws-sdk-go v1.25.3
+	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.0.0 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.6.4 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.8.2 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.2 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.2 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.5.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.9.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.6.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.11.1 // indirect
+	github.com/aws/smithy-go v1.9.0 // indirect
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
 	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -51,7 +74,7 @@ require (
 	github.com/hashicorp/yamux v0.0.0-20181012175058-2f1d1f20f75d // indirect
 	github.com/huandu/xstrings v1.3.2 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
-	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/jstemmer/go-junit-report v0.9.1 // indirect
 	github.com/klauspost/compress v1.11.2 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
@@ -73,10 +96,11 @@ require (
 	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e // indirect
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect
 	golang.org/x/mod v0.3.0 // indirect
-	golang.org/x/net v0.0.0-20210326060303-6b1517762897 // indirect
+	golang.org/x/net v0.0.0-20210505024714-0287a6fb4125 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d // indirect
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/sys v0.0.0-20210927094055-39ccf1dd6fa6 // indirect
-	golang.org/x/text v0.3.5 // indirect
+	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/tools v0.0.0-20200713011307-fd294ab11aed // indirect
 	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 // indirect
 	google.golang.org/api v0.29.0 // indirect

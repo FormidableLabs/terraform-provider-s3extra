@@ -1,0 +1,55 @@
+---
+################################################################################
+# Bootstrap
+################################################################################
+# This template provides time-limited credentials for running Terraform provider
+# acceptance tests in a restricted AWS account.
+################################################################################
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: 'Terraform bootstrap'
+
+Parameters:
+  ServiceName:
+    Description: Base name of the service.
+    Type: String
+  AccountNickname:
+    Description: A short nickname for the target AWS account. Typically "nonprod" or "prod".
+    Type: String
+  Organization:
+    Type: String
+  Repository:
+    Type: String
+    Default: "*"
+
+Resources:
+  CiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${ServiceName}-${AccountNickname}-github
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRoleWithWebIdentity
+            Principal:
+              Federated: !Ref GithubOidc
+            Condition:
+              StringLike:
+                token.actions.githubusercontent.com:sub:
+                  - !Sub repo:${Organization}/${Repository}:*
+      ManagedPolicyArns: 
+        # Note: the account's OU SCP restricts this role.
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
+  GithubOidc:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList: 
+        - sts.amazonaws.com
+      ThumbprintList:
+        - a031c46782e6e6c662c2c87c76da9aa62ccabd8e
+
+Outputs:
+  Role:
+    Value: !GetAtt CiRole.Arn
