@@ -8,6 +8,8 @@ on:
     paths-ignore:
       - 'README.md'
   push:
+    branches:
+      - 'main'
     paths-ignore:
       - 'README.md'
 
@@ -54,7 +56,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          # From
+          # From the output of the bootstrap stack in `support/bootstrap.yml`
           role-to-assume: arn:aws:iam::957709951662:role/tfp-s3extra-prod-github
           aws-region: us-east-1
       - uses: actions/setup-go@v2
