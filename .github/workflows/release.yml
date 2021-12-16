@@ -52,8 +52,7 @@ jobs:
           sudo apt install svu
       - name: Determine version
         run: |
-          git tag $(svu next)
-          git push --tags
+          svu next
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2.8.0
         with:
