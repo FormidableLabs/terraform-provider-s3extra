@@ -11,9 +11,10 @@ on:
     paths-ignore:
       - 'README.md'
 
-# Testing only needs permissions to read the repository contents.
+# Testing needs permissions to read the repository contents and to create OIDC tokens.
 permissions:
   contents: read
+  id-token: write
 
 # Default values to simplify job configurations below.
 env:
