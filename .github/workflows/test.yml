@@ -50,6 +50,11 @@ jobs:
         terraform:
           - '1.0.*'
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::957709951662:role/tfp-s3extra-CiRole-30GNE9I0KRPP
+          aws-region: us-east-1
       - uses: actions/setup-go@v2
         with:
           go-version: ${{ env.GO_VERSION }}

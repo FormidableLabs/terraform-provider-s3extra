@@ -1,0 +1,121 @@
+---
+#############################################################################
+# Bootstrap
+#############################################################################
+# This template provides secure-by-default base resources for Terraform root
+# modules stack to store and protect remote state.
+#############################################################################
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: 'Terraform bootstrap'
+
+Parameters:
+  ServiceName:
+    Description: Base name of the service.
+    Type: String
+  AccountNickname:
+    Description: A short nickname for the target AWS account. Typically "nonprod" or "prod".
+    Type: String
+  Organization:
+    Type: String
+  Repository:
+    Type: String
+    Default: "*"
+
+Resources:
+  Logs:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${ServiceName}-${AccountNickname}-state-logs'
+      AccessControl: LogDeliveryWrite
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+            BucketKeyEnabled: true
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LoggingConfiguration:
+        # Log to itself
+        DestinationBucketName: !Sub '${ServiceName}-${AccountNickname}-state-logs'
+        LogFilePrefix: !Sub 'logs/self/'
+      Tags:
+        - Key: 'Service'
+          Value: !Sub '${ServiceName}'
+
+  State:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${ServiceName}-${AccountNickname}-state'
+      AccessControl: Private
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+            BucketKeyEnabled: true
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LoggingConfiguration:
+        DestinationBucketName: !Ref Logs
+        LogFilePrefix: !Sub 'logs/${ServiceName}-${AccountNickname}-state/'
+      Tags:
+        - Key: 'Service'
+          Value: !Sub '${ServiceName}'
+
+  Locks:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub '${ServiceName}-${AccountNickname}-locks'
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: LockID
+          KeyType: HASH
+      AttributeDefinitions:
+        - AttributeName: LockID
+          AttributeType: S
+      SSESpecification:
+        SSEEnabled: true
+        SSEType: KMS
+      Tags:
+        - Key: 'Service'
+          Value: !Sub '${ServiceName}'
+
+  CiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRoleWithWebIdentity
+            Principal:
+              Federated: !Ref GithubOidc
+            Condition:
+              StringLike:
+                token.actions.githubusercontent.com:sub:
+                  - !Sub repo:${Organization}/${Repository}:*
+      ManagedPolicyArns: 
+        # Note: the account's OU SCP restricts this role.
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
+  GithubOidc:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList: 
+        - sts.amazonaws.com
+      ThumbprintList:
+        - a031c46782e6e6c662c2c87c76da9aa62ccabd8e
+
+Outputs:
+  Role:
+    Value: !GetAtt CiRole.Arn

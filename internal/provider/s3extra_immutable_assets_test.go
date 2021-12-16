@@ -162,6 +162,26 @@ type attributes struct {
 
 func testAccS3ExtraImmutableAssetsConfig(t *testing.T, attributes attributes) string {
 	tmpl := template.Must(template.New("config").Parse(`
+terraform {
+  required_version = ">= 1.0.3"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.69.0"
+    }
+  }
+
+  backend "s3" {
+  	region = "us-east-1"
+
+  	bucket = "tfp-s3extra-prod-state"
+  	key    = "acc-test/terraform.tfstate"
+
+  	dynamodb_table = "tfp-s3extra-prod-locks"
+  }
+}
+
 resource "s3extra_immutable_assets" "test" {
 	bucket = "{{.Bucket}}"
 	glob = "{{.Glob}}"
