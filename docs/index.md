@@ -3,12 +3,12 @@
 page_title: "s3extra Provider"
 subcategory: ""
 description: |-
-  
+  S3 Extra provides extra resources for interacting with S3-compatible object storage.
 ---
 
 # s3extra Provider
 
-
+S3 Extra provides extra resources for interacting with S3-compatible object storage.
 
 ## Example Usage
 
