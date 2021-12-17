@@ -74,6 +74,6 @@ resource "s3extra_immutable_assets" "example" {
 
 Optional:
 
-- **cache_control** (String) The `cache_control` header to apply to all matched files.
+- **cache_control** (String) The `cache_control` header to apply to all uploaded files.
 
 
