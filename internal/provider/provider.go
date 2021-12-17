@@ -78,6 +78,7 @@ func (p *provider) GetDataSources(ctx context.Context) (map[string]tfsdk.DataSou
 
 func (p *provider) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
 	return tfsdk.Schema{
+		MarkdownDescription: "S3 Extra provides extra resources for interacting with S3-compatible object storage.",
 		Attributes: map[string]tfsdk.Attribute{
 			"region": {
 				Type:     types.StringType,

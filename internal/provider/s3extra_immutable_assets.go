@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"crypto/sha256"
+	_ "embed"
 	"encoding/hex"
 	"fmt"
 
@@ -14,9 +15,12 @@ import (
 
 type s3extraImmutableAssetsType struct{}
 
+//go:embed s3extra_immutable_assets.md
+var schemaDescription string
+
 func (t s3extraImmutableAssetsType) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
 	return tfsdk.Schema{
-		MarkdownDescription: "Manages multiple immutable asset files in an S3-compatible bucket.",
+		MarkdownDescription: string(schemaDescription),
 
 		Attributes: map[string]tfsdk.Attribute{
 			"bucket": {
