@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.11.0
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.7.4
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.21.0
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.22.0
 	github.com/goreleaser/fileglob v1.2.0
 	github.com/hashicorp/terraform-plugin-docs v0.5.1
 	github.com/hashicorp/terraform-plugin-framework v0.5.0
