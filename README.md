@@ -58,10 +58,10 @@ In order to run the full suite of acceptance tests, run `make testacc`. You will
 *Note:* Acceptance tests create real resources and cost money to run.
 
 ```shell
-## With credentials already in environment
+### With credentials already in environment
 make testacc
 
-## With `aws-vault`
+### With `aws-vault`
 aws-vault exec profile-name -- make testacc
 ```
 
