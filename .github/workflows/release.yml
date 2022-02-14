@@ -50,11 +50,21 @@ jobs:
           echo 'deb [trusted=yes] https://apt.fury.io/caarlos0/ /' | sudo tee /etc/apt/sources.list.d/caarlos0.list
           sudo apt update
           sudo apt install svu
+      # check if we need to bump tags
+      - name: check for release
+        run: |
+          if [ $(svu next) == $(svu current) ]; then
+            echo "tag match - skip release" &&  echo "skip-release=true" >> $GITHUB_ENV
+          else
+            echo "tag mismatch - tagging for new release" &&  echo "skip-release=false" >> $GITHUB_ENV
+          fi
       - name: Tag new version
+        if: ${{ env.skip-release == 'false' }}
         run: |
           git tag $(svu next)
           git push --tags
       - name: Run GoReleaser
+        if: ${{ env.skip-release == 'false' }}
         uses: goreleaser/goreleaser-action@v2.8.0
         with:
           args: release --rm-dist
