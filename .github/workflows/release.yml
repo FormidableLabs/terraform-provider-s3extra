@@ -54,17 +54,17 @@ jobs:
       - name: check for release
         run: |
           if [ $(svu next) == $(svu current) ]; then
-            echo "tag match - skip release" &&  echo "skip-release=true" >> $GITHUB_ENV
+            echo "tag match - skip release" &&  echo "do-release=false" >> $GITHUB_ENV
           else
-            echo "tag mismatch - tagging for new release" &&  echo "skip-release=false" >> $GITHUB_ENV
+            echo "tag mismatch - tagging for new release" &&  echo "do-release=true" >> $GITHUB_ENV
           fi
       - name: Tag new version
-        if: ${{ env.skip-release == 'false' }}
+        if: ${{ env.do-release == 'true' }}
         run: |
           git tag $(svu next)
           git push --tags
       - name: Run GoReleaser
-        if: ${{ env.skip-release == 'false' }}
+        if: ${{ env.do-release == 'true' }}
         uses: goreleaser/goreleaser-action@v2.8.0
         with:
           args: release --rm-dist
