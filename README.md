@@ -68,3 +68,7 @@ aws-vault exec profile-name -- make testacc
 If you are a Formidable contributor, reach out to the `#operations` channel and tag a maintainer for assistance. We can provide you credentials to our least-privilege AWS account dedicated to running this provider's acceptance tests in automation.
 
 [aws-vault]: https://github.com/99designs/aws-vault
+
+## Maintenance Status
+
+**Active:** Formidable is actively working on this project, and we expect to continue for work for the foreseeable future. Bug reports, feature requests and pull requests are welcome.
