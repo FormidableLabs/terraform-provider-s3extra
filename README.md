@@ -1,5 +1,7 @@
 # Terraform Provider S3 Extra
 
+[![Maintenance Status][maintenance-image]](#maintenance-status)
+
 S3 Extra provides extra resources for interacting with S3-compatible object storage.
 
 ## Maintenance status
@@ -72,3 +74,5 @@ If you are a Formidable contributor, reach out to the `#operations` channel and 
 ## Maintenance Status
 
 **Active:** Formidable is actively working on this project, and we expect to continue for work for the foreseeable future. Bug reports, feature requests and pull requests are welcome.
+
+[maintenance-image]: https://img.shields.io/badge/maintenance-active-green.svg?color=brightgreen&style=flat
