@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/setup-go@v2
+      - uses: actions/setup-go@v3
         with:
           go-version: ${{ env.GO_VERSION }}
       - uses: actions/checkout@v2
@@ -77,7 +77,7 @@ jobs:
           # From the output of the bootstrap stack in `support/bootstrap.yml`
           role-to-assume: arn:aws:iam::957709951662:role/tfp-s3extra-prod-github
           aws-region: us-east-1
-      - uses: actions/setup-go@v2
+      - uses: actions/setup-go@v3
         with:
           go-version: ${{ env.GO_VERSION }}
       - uses: hashicorp/setup-terraform@v1
