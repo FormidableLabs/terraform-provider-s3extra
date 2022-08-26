@@ -65,7 +65,7 @@ jobs:
           git push --tags
       - name: Run GoReleaser
         if: ${{ env.do-release == 'true' }}
-        uses: goreleaser/goreleaser-action@v2.8.0
+        uses: goreleaser/goreleaser-action@v3.1.0
         with:
           args: release --rm-dist
         env:
