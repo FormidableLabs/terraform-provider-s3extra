@@ -1,4 +1,4 @@
-# Terraform Provider S3 Extra
+[![Terraform Provider S3 Extra — Formidable, We build the modern web](https://raw.githubusercontent.com/FormidableLabs/terraform-provider-s3extra/main/terraform-provider-s3extra-Hero.png)](https://formidable.com/open-source/)
 
 S3 Extra provides extra resources for interacting with S3-compatible object storage.
 
